@@ -1,6 +1,6 @@
 package com.yan.seckill.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

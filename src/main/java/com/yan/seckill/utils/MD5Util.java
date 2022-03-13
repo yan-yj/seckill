@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * MD5
  *
- * @description:
+ * @description: 加密
  * @author: yan-yj
  * @time: 2022/3/12 17:47
  */
