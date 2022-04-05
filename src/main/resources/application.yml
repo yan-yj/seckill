@@ -1,9 +1,9 @@
 spring:
-  # thymeleaf??
+  # thymeleaf配置
   thymeleaf:
-    # ????
+    # 关闭缓存
     cache: false
-  # ?????
+  # 数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
@@ -27,14 +27,35 @@ spring:
       # ???????????????????
       connection-test-query: SELECT 1
 
-# Mybatis-plus??
+  # redis配置
+  redis:
+    # 服务器
+    host: 121.4.249.79
+    # 端口
+    port: 6379
+    # 数据库（默认为0）
+    database: 0
+    # 超时时间
+    timeout: 10000ms
+    letuce:
+      pool:
+        # 最大链接数，默认为8
+        max_active: 8
+        # 最大连接阻塞等待时间，默认-1
+        max-wait: 10000ms
+        # 最大空闲连接，默认为8
+        max-idle: 200
+        # 最小空闲连接，默认为0
+        min-idle: 5
+
+# Mybatis-plus配置
 mybatis-plus:
-  # ??Mapper.xml????
+  # 配置Mapper.xml映射文件
   mapper-locations: classpath*:/mapper/*Mapper.xml
-  # ??MyBatis?????????????????
+  # 配置MyBatis数据返回类型别名（默认别名是类名）
   type-aliases-package: com.yan.seckill.pojo
 
-# Mybatis SQL ??????????????Mapper.xml?????
+# Mybatis SQL打印 （方法接口所在的包，不是Mapper.xml所在的包）
 logging:
   level:
     com.yan.seckill.mapper: debug
