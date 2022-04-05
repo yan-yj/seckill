@@ -23,23 +23,24 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
+
     @Autowired
     private IUserService userService;
 
-    @RequestMapping("toList")
-    public String toList(HttpServletRequest request, HttpServletResponse response, Model model, @CookieValue("userTicket") String ticket) {
+    @RequestMapping("/toList")
+    public String toList(Model model, User user) {
         // 判断是否登录
-        if (StringUtils.isEmpty(ticket)) {
-            return "login";
-        }
+        //if (StringUtils.isEmpty(ticket)) {
+        //    return "login";
+        //}
 
         // 通过session获取用户信息
         //User user = (User) session.getAttribute(ticket);
-
-        User user = userService.getUserByCookie(ticket, request, response);
-        if (null == user) {
-            return "login";
-        }
+        //
+        //User user = userService.getUserByCookie(ticket, request, response);
+        //if (null == user) {
+        //    return "login";
+        //}
 
         model.addAttribute("user", user);
 
