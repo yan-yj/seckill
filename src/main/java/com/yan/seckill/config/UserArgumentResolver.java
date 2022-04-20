@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  * @time: 2022/4/5 17:20
  */
 @Component
+
+
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
