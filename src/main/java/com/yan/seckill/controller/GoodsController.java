@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yan.seckill.pojo.User;
 import com.yan.seckill.service.IGoodsService;
 import com.yan.seckill.service.IUserService;
+import com.yan.seckill.vo.DetailVo;
 import com.yan.seckill.vo.GoodsVo;
+import com.yan.seckill.vo.RespBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -63,6 +65,54 @@ public class GoodsController {
         return html;
     }
 
+    ///**
+    // * 跳转商品详情页
+    // * @param model
+    // * @param user
+    // * @param goodsId
+    // * @return
+    // */
+    //@RequestMapping(value = "/toDetail/{goodsId}", produces = "text/html;charset=utf-8")
+    //@ResponseBody
+    //public String toDetail(Model model, User user, @PathVariable Long goodsId,
+    //                       HttpServletRequest request, HttpServletResponse response) {
+    //    ValueOperations valueOperations = redisTemplate.opsForValue();
+    //    String html = (String) valueOperations.get("goodsDetail:" + goodsId);
+    //    if (!StringUtils.isEmpty(html)) {
+    //        return html;
+    //    }
+    //    model.addAttribute("user", user);
+    //    GoodsVo goodsVo = goodsService.findGoodsVoByGoodsId(goodsId);
+    //    Date startDate = goodsVo.getStartDate();
+    //    Date endDate = goodsVo.getEndDate();
+    //    Date nowDate = new Date();
+    //    //秒杀状态 0:未开始，1:进行中，2:已结束
+    //    int secKillStatus = 0;
+    //    // 秒杀倒计时 -1:已结束，0:进行中
+    //    int remainSeconds = 0;
+    //    if (nowDate.before(startDate)) {
+    //        remainSeconds = (int)(startDate.getTime() - nowDate.getTime())/1000;
+    //    }else if (nowDate.after(endDate)) {
+    //        // 秒杀已经结束
+    //        secKillStatus = 2;
+    //        remainSeconds = -1;
+    //    }else {
+    //        secKillStatus = 1;
+    //        remainSeconds = 0;
+    //    }
+    //    model.addAttribute("remainSeconds",remainSeconds);
+    //    model.addAttribute("secKillStatus",secKillStatus);
+    //    model.addAttribute("goods", goodsVo);
+    //
+    //    WebContext webContext = new WebContext(request, response, request.getServletContext(), response.getLocale(),
+    //                                            model.asMap());
+    //    html = thymeleafViewResolver.getTemplateEngine().process("goodsDetail", webContext);
+    //    if (!StringUtils.isEmpty(html)) {
+    //        valueOperations.set("goodsDetail:"+goodsId, html, 60, TimeUnit.SECONDS);
+    //    }
+    //    return html;
+    //}
+
     /**
      * 跳转商品详情页
      * @param model
@@ -70,20 +120,15 @@ public class GoodsController {
      * @param goodsId
      * @return
      */
-    @RequestMapping(value = "/toDetail/{goodsId}", produces = "text/html;charset=utf-8")
+    @RequestMapping(value = "/toDetail/{goodsId}")
     @ResponseBody
-    public String toDetail(Model model, User user, @PathVariable Long goodsId,
-                           HttpServletRequest request, HttpServletResponse response) {
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        String html = (String) valueOperations.get("goodsDetail:" + goodsId);
-        if (!StringUtils.isEmpty(html)) {
-            return html;
-        }
-        model.addAttribute("user", user);
+    public RespBean toDetail(Model model, User user, @PathVariable Long goodsId) {
+
         GoodsVo goodsVo = goodsService.findGoodsVoByGoodsId(goodsId);
         Date startDate = goodsVo.getStartDate();
         Date endDate = goodsVo.getEndDate();
         Date nowDate = new Date();
+
         //秒杀状态 0:未开始，1:进行中，2:已结束
         int secKillStatus = 0;
         // 秒杀倒计时 -1:已结束，0:进行中
@@ -98,16 +143,13 @@ public class GoodsController {
             secKillStatus = 1;
             remainSeconds = 0;
         }
-        model.addAttribute("remainSeconds",remainSeconds);
-        model.addAttribute("secKillStatus",secKillStatus);
-        model.addAttribute("goods", goodsVo);
 
-        WebContext webContext = new WebContext(request, response, request.getServletContext(), response.getLocale(),
-                                                model.asMap());
-        html = thymeleafViewResolver.getTemplateEngine().process("goodsDetail", webContext);
-        if (!StringUtils.isEmpty(html)) {
-            valueOperations.set("goodsDetail:"+goodsId, html, 60, TimeUnit.SECONDS);
-        }
-        return html;
+        DetailVo detailVo = new DetailVo();
+        detailVo.setGoodsVo(goodsVo);
+        detailVo.setUser(user);
+        detailVo.setSecKillStatus(secKillStatus);
+        detailVo.setRemainSeconds(remainSeconds);
+
+        return RespBean.success(detailVo);
     }
 }
