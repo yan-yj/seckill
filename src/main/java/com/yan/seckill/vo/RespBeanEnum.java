@@ -26,9 +26,12 @@ public enum RespBeanEnum {
     BIND_ERROR(500212, "参数校验异常"),
     MOBILE_NOT_EXIST(500213,"手机号不存在"),
     PASSWORD_UPDATE_FAIL(500214,"更新密码失败"),
+    SESSION_ERROR(500215,"用户不存在"),
     // 秒杀模块5005XX
     EMPTY_STOCK(500500, "库存不足"),
-    REPEATE_ERROR(500501, "限购一件")
+    REPEATE_ERROR(500501, "限购一件"),
+    // 订单模块
+    ORDER_NOT_EXIST(500300, "订单不存在")
     ;
 
     private final Integer code;
