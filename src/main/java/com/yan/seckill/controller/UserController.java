@@ -1,8 +1,12 @@
 package com.yan.seckill.controller;
 
 
+import com.yan.seckill.rabbitMQ.MQSender;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * <p>
@@ -16,4 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private MQSender mqSender;
+
+    @RequestMapping("/mq")
+    @ResponseBody
+    public void mq() {
+        mqSender.send("Hello, MQ!");
+    }
 }

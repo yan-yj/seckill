@@ -69,6 +69,39 @@ spring:
         # 最小空闲连接，默认为0
         min-idle: 5
 
+  # rabbitmq配置
+  rabbitmq:
+    host: 106.15.237.81
+    stream:
+      username: guest
+      password: guest
+    virtual-host: /
+    port: 5672
+    listener:
+      simple:
+        # 消费者最小数量
+        concurrency: 10
+        # 消费者最大数量
+        max-concurrency: 10
+        # 限制消费者每次只能处理一条消息，处理完成之后再继续下一条
+        prefetch: 1
+        # 启动时是否默认启动容器，默认true
+        auto-startup: true
+        # 被拒绝后重新进入队列
+        default-requeue-rejected: true
+    template:
+      retry:
+        # 发布重试，默认false
+        enabled: true
+        # 重试时间，默认1000ms
+        initial-interval: 1000ms
+        # 最大重试次数，默认3次
+        max-attempts: 3
+        # 最大重试时间间隔，默认10000ms
+        max-interval: 10000ms
+        # 重试间隔时间的系数，若为2则每次重试时间翻倍
+        multiplier: 1
+
 # Mybatis-plus配置
 mybatis-plus:
   # 配置Mapper.xml映射文件
@@ -80,3 +113,5 @@ mybatis-plus:
 logging:
   level:
     com.yan.seckill.mapper: debug
+
+
